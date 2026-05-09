@@ -1,0 +1,39 @@
+---
+// src/pages/404.astro
+// No getStaticPaths needed here!
+export const prerender = true;
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <!-- This meta tag handles the redirect immediately -->
+    <meta http-equiv="refresh" content="0;url=/services/" />
+    <link rel="canonical" href="https://spldecks.com/services/" />
+    <title>Redirecting to SPL Decks Services</title>
+    <style>
+      body {
+        font-family: sans-serif;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100vh;
+        margin: 0;
+        background-color: #f9fafb;
+      }
+      .loader {
+        text-align: center;
+      }
+      a {
+        color: #c2410c;
+        text-decoration: underline;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="loader">
+      <p>Redirecting you to our <a href="/services/">services catalog</a>...</p>
+    </div>
+  </body>
+</html>
