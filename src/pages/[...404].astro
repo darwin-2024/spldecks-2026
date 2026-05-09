@@ -3,9 +3,9 @@
 export const prerender = true;
 
 export function getStaticPaths() {
-  // This tells Astro to generate a single catch-all page
-  // The 'undefined' slug matches the root level 404
-  return [{ params: { '404': undefined } }];
+  // By using a specific string like '404', we prevent it
+  // from hijacking the home page (index.astro).
+  return [{ params: { '404': '404' } }];
 }
 ---
 
