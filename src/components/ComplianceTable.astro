@@ -1,0 +1,36 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  items: Array<{ label: string; value: string }>;
+  note: string;
+}
+
+const { title, description, items, note } = Astro.props;
+---
+
+<section class="py-20 bg-base-100">
+  <div class="container mx-auto px-4 max-w-4xl">
+    <div class="text-center mb-12">
+      <h2 class="text-3xl font-bold text-base-content mb-4 uppercase">{title}</h2>
+      <p class="text-base-content/60">{description}</p>
+    </div>
+    
+    <div class="border border-base-300 rounded-sm overflow-hidden">
+      {items.map((item, index) => (
+        <div class={`flex flex-col md:flex-row border-b border-base-300 last:border-0 ${index % 2 === 0 ? 'bg-base-200/50' : 'bg-base-100'}`}>
+          <div class="md:w-1/3 p-4 font-bold text-primary uppercase text-sm tracking-wider self-center">
+            {item.label}
+          </div>
+          <div class="md:w-2/3 p-4 text-base-content border-t md:border-t-0 md:border-l border-base-300">
+            {item.value}
+          </div>
+        </div>
+      ))}
+    </div>
+    
+    <div class="mt-8 p-6 bg-accent/5 border-l-4 border-accent italic text-base-content/80">
+      "{note}"
+    </div>
+  </div>
+</section>

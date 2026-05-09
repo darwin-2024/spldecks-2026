@@ -1,0 +1,53 @@
+---
+// src/components/Testimonials.astro
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  items: Array<{
+    quote: string;
+    name: string;
+    profession: string;
+  }>;
+}
+
+const { items } = Astro.props;
+---
+
+<section class="py-20">
+  <div class="text-center mb-16">
+    <h2 class="text-4xl font-bold font-heading text-primary mb-4">
+      What Our Clients Say
+    </h2>
+    <p class="text-lg font-body text-base-content/70">
+      Trusted by homeowners and property managers across Southern California.
+    </p>
+  </div>
+
+  <div class="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
+    {
+      items.map((item) => (
+        <div class="bg-base-100 p-8 rounded-2xl shadow-lg border border-base-300 relative">
+          <Icon
+            name="mdi:format-quote-open"
+            class="absolute top-4 left-4 w-12 h-12 text-primary/10"
+            aria-hidden="true"
+          />
+          <p class="text-xl italic font-body text-base-content/90 mb-8 relative z-10">
+            "{item.quote}"
+          </p>
+          <div class="flex items-center gap-4">
+            <div class="avatar placeholder">
+              <div class="bg-neutral text-neutral-content rounded-full w-12 h-12 flex items-center justify-center">
+                <span class="text-xl leading-none">{item.name.charAt(0)}</span>
+              </div>
+            </div>
+            <div>
+              <p class="font-bold text-lg">{item.name}</p>
+              <p class="text-sm text-base-content/75">{item.profession}</p>
+            </div>
+          </div>
+        </div>
+      ))
+    }
+  </div>
+</section>

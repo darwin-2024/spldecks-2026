@@ -1,0 +1,167 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  data: {
+    title: string;
+    fields: Array<{
+      name: string;
+      label: string;
+      type: string;
+      required?: boolean;
+      options?: string[];
+    }>;
+    buttonLabel: string;
+  };
+}
+
+const { data } = Astro.props;
+---
+
+<div class="w-full">
+  <form
+    id="contact-form"
+    class="grid grid-cols-1 md:grid-cols-2 gap-x-4 gap-y-5"
+  >
+    {
+      data.fields.map((field) => (
+        <div
+          class={`form-control w-full ${field.type === 'textarea' ? 'md:col-span-2' : ''}`}
+        >
+          <label class="label pb-1.5" for={field.name}>
+            <span class="label-text font-bold uppercase text-[11px] tracking-widest text-base-content/60">
+              {field.label}{' '}
+              {field.required && (
+                <span class="text-primary" title="Required">
+                  *
+                </span>
+              )}
+            </span>
+          </label>
+
+          {field.type === 'textarea' ? (
+            <textarea
+              id={field.name}
+              name={field.name}
+              class="textarea textarea-bordered rounded-sm h-32 focus:border-primary focus:outline-none text-base w-full bg-base-200/50 transition-all placeholder:text-base-content/30"
+              required={field.required}
+              placeholder="Tell us about the deck size, current coating, or leaks..."
+            />
+          ) : field.type === 'select' ? (
+            <select
+              id={field.name}
+              name={field.name}
+              class="select select-bordered rounded-sm focus:border-primary focus:outline-none text-base w-full bg-base-200/50 transition-all"
+              required={field.required}
+            >
+              <option disabled selected value="">
+                Please select...
+              </option>
+              {field.options?.map((option) => (
+                <option value={option}>{option}</option>
+              ))}
+            </select>
+          ) : (
+            <input
+              id={field.name}
+              type={field.type as any}
+              name={field.name}
+              class="input input-bordered rounded-sm focus:border-primary focus:outline-none text-base w-full bg-base-200/50 transition-all placeholder:text-base-content/30"
+              required={field.required}
+              placeholder={field.label}
+            />
+          )}
+        </div>
+      ))
+    }
+
+    <div class="form-control mt-4 md:col-span-2">
+      <button
+        id="submit-btn"
+        type="submit"
+        class="btn btn-primary rounded-sm btn-lg gap-3 text-sm uppercase tracking-[0.2em] font-black shadow-md group"
+      >
+        <span id="btn-text">{data.buttonLabel}</span>
+        <Icon
+          name="mdi:arrow-right"
+          class="w-5 h-5 group-hover:translate-x-2 transition-transform"
+        />
+        <span id="loading-spinner" class="loading loading-spinner hidden"
+        ></span>
+      </button>
+    </div>
+  </form>
+</div>
+
+{/* Minimalist Notification System */}
+<div id="toast-container" class="fixed bottom-8 right-8 z-100 hidden">
+  <div
+    id="toast-alert"
+    class="flex items-center gap-3 px-6 py-4 border-l-4 shadow-2xl bg-base-100 min-w-75"
+  >
+    <div id="toast-icon" class="text-2xl"></div>
+    <div>
+      <p id="toast-message" class="font-bold text-sm uppercase tracking-tight">
+      </p>
+    </div>
+  </div>
+</div>
+
+<script>
+  const form = document.getElementById('contact-form') as HTMLFormElement;
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const btnText = document.getElementById('btn-text');
+  const loadingSpinner = document.getElementById('loading-spinner');
+  const toastContainer = document.getElementById('toast-container');
+  const toastAlert = document.getElementById('toast-alert');
+  const toastMessage = document.getElementById('toast-message');
+  const toastIcon = document.getElementById('toast-icon');
+
+  function showToast(message: string, type: 'success' | 'error') {
+    if (!toastContainer || !toastAlert || !toastMessage || !toastIcon) return;
+
+    toastMessage.textContent = message;
+    toastAlert.classList.remove('border-success', 'border-error');
+    toastAlert.classList.add(
+      type === 'success' ? 'border-success' : 'border-error'
+    );
+    toastIcon.innerHTML = type === 'success' ? '✓' : '✕';
+    toastIcon.classList.add(type === 'success' ? 'text-success' : 'text-error');
+
+    toastContainer.classList.remove('hidden');
+    setTimeout(() => toastContainer.classList.add('hidden'), 6000);
+  }
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    submitBtn.disabled = true;
+    btnText?.classList.add('opacity-0');
+    loadingSpinner?.classList.remove('hidden');
+
+    const formData = new FormData(form);
+    const payload = Object.fromEntries(formData);
+
+    try {
+      // Endpoint updated to the parent company's existing handler
+      const response = await fetch('/api/contact/', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ ...payload, source: 'spldecks.com' }),
+      });
+
+      if (response.ok) {
+        showToast('Inspection Request Received.', 'success');
+        form.reset();
+      } else {
+        showToast('Submission Failed. Please call us directly.', 'error');
+      }
+    } catch (error) {
+      showToast('Network Error. Please check your connection.', 'error');
+    } finally {
+      submitBtn.disabled = false;
+      btnText?.classList.remove('opacity-0');
+      loadingSpinner?.classList.add('hidden');
+    }
+  });
+</script>

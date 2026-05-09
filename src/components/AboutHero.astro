@@ -1,0 +1,47 @@
+---
+import { Image } from 'astro:assets';
+
+interface Props {
+  data: {
+    title: string;
+    description: string;
+    image: {
+      src: any;
+      alt: string;
+      priority?: boolean;
+    };
+  };
+}
+
+const { data } = Astro.props;
+---
+
+<section class="relative bg-base-100 py-12 lg:py-24 border-b border-base-300">
+  <div class="container mx-auto px-4">
+    <div class="flex flex-col lg:flex-row items-stretch gap-12">
+      <div class="flex-1 flex flex-col justify-center">
+        <div
+          class="inline-block px-3 py-1 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-6"
+        >
+          Established Authority
+        </div>
+        <h1
+          class="text-4xl lg:text-6xl font-extrabold text-base-content leading-tight mb-6 uppercase"
+        >
+          {data.title}
+        </h1>
+        <p class="text-xl text-base-content/70 leading-relaxed max-w-xl">
+          {data.description}
+        </p>
+      </div>
+      <div class="flex-1">
+        <Image
+          src={data.image.src}
+          alt={data.image.alt}
+          class="w-full h-full object-cover rounded-sm shadow-2xl border border-base-300"
+          loading={data.image.priority ? 'eager' : 'lazy'}
+        />
+      </div>
+    </div>
+  </div>
+</section>

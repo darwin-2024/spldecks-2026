@@ -1,0 +1,36 @@
+---
+import { getCollection, render } from 'astro:content';
+import PageLayout from '../../layouts/PageLayout.astro';
+import Hero from '../../components/Hero.astro';
+import Features from '../../components/Features.astro';
+import FAQ from '../../components/FAQ.astro';
+
+export const prerender = true;
+
+export async function getStaticPaths() {
+  const serviceEntries = await getCollection('services');
+  return serviceEntries.map((entry) => ({
+    params: { services: entry.data.slug },
+    props: { entry },
+  }));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+const { features, faq } = entry.data;
+
+---
+
+<PageLayout entry={entry}>
+  <Hero data={entry.data} />
+
+  {features && <Features features={features} />}
+
+  <article
+    class="prose prose-lg max-w-none font-body text-base-content/90 my-16"
+  >
+    <Content />
+  </article>
+
+  {faq && <FAQ faq={faq} />}
+</PageLayout>

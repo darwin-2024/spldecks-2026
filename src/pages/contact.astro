@@ -1,0 +1,114 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { contactPage } from '../data/contactPage';
+import ContactForm from '../components/ContactForm.astro';
+import { Icon } from 'astro-icon/components';
+
+export const prerender = true;
+
+const { seo, content, contactInfo, form } = contactPage;
+---
+
+<PageLayout seo={seo}>
+  <section class="py-12 lg:py-20 container mx-auto px-4">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-start">
+      
+      <!-- Left Column: Branding & Info -->
+      <div class="space-y-10">
+        <div>
+          <div class="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 text-primary text-xs font-bold uppercase tracking-widest mb-6 rounded-full">
+            <span class="relative flex h-2 w-2">
+              <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-primary opacity-75"></span>
+              <span class="relative inline-flex rounded-full h-2 w-2 bg-primary"></span>
+            </span>
+            Accepting New Projects
+          </div>
+          <h1 class="text-4xl lg:text-6xl font-black text-base-content leading-tight mb-6 uppercase tracking-tight">
+            {content.heading}
+          </h1>
+          <p class="text-xl text-base-content/70 leading-relaxed border-l-4 border-primary pl-6">
+            {content.subheading}
+          </p>
+        </div>
+
+        <!-- Contact Cards -->
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div class="p-6 bg-base-200 border border-base-300 rounded-sm">
+            <Icon name="mdi:phone-check" class="w-8 h-8 text-primary mb-4" />
+            <p class="font-bold uppercase text-xs tracking-widest text-base-content/50 mb-1">Direct Line</p>
+            <a href={`tel:${contactInfo.phone}`} class="text-xl font-bold hover:text-primary transition-colors">
+              {contactInfo.phoneDisplay}
+            </a>
+          </div>
+          
+          <div class="p-6 bg-base-200 border border-base-300 rounded-sm">
+            <Icon name="mdi:email-seal" class="w-8 h-8 text-primary mb-4" />
+            <p class="font-bold uppercase text-xs tracking-widest text-base-content/50 mb-1">Email Division</p>
+            <a href={`mailto:${contactInfo.email}`} class="text-lg font-bold hover:text-primary transition-colors break-all">
+              {contactInfo.email}
+            </a>
+          </div>
+        </div>
+
+        <!-- Credentials & Licensing -->
+        <div class="space-y-6">
+          <div class="flex items-start gap-4">
+            <Icon name="mdi:shield-check" class="w-6 h-6 text-primary shrink-0" />
+            <div>
+              <p class="font-bold">Credentialed Expertise</p>
+              <p class="text-base-content/70">{contactInfo.license}</p>
+              <p class="text-xs text-base-content/50 mt-1 uppercase">Division of SPL Waterproofing Inc.</p>
+            </div>
+          </div>
+
+          <div class="flex items-start gap-4">
+            <Icon name="mdi:map-marker-radius" class="w-6 h-6 text-primary shrink-0" />
+            <div>
+              <p class="font-bold">Headquarters</p>
+              <p class="text-base-content/70">
+                {contactInfo.address.street}, {contactInfo.address.city}, {contactInfo.address.state} {contactInfo.address.zip}
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <hr class="border-base-300" />
+
+        <!-- Service Area Tag Cloud -->
+        <div>
+          <p class="font-bold uppercase text-xs tracking-[0.2em] mb-4">Priority Service Zones</p>
+          <div class="flex flex-wrap gap-2">
+            {content.serviceAreas.cities.map(city => (
+              <span class="px-3 py-1 bg-base-200 text-sm font-medium border border-base-300">
+                {city}
+              </span>
+            ))}
+          </div>
+          <p class="mt-4 text-sm text-base-content/50 italic">
+            {content.serviceAreas.suffix}
+          </p>
+        </div>
+      </div>
+
+      <!-- Right Column: The Form -->
+      <div class="lg:sticky lg:top-24">
+        <div class="bg-base-100 p-8 lg:p-12 border border-base-300 shadow-2xl relative">
+          <!-- Decorative Corner Accents -->
+          <div class="absolute top-0 right-0 w-16 h-16 border-t-4 border-r-4 border-primary/20 -mr-2 -mt-2"></div>
+          
+          <div class="mb-8 text-center">
+            <h2 class="text-2xl font-bold uppercase tracking-tight mb-2">{form.title}</h2>
+            <p class="text-base-content/60 text-sm">Fill out the details below for a deck-specific assessment.</p>
+          </div>
+
+          <ContactForm data={form} />
+          
+          <p class="text-[10px] text-center mt-6 text-base-content/40 uppercase tracking-widest">
+            Privacy Guaranteed • Licensed C-39 Response
+          </p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+</PageLayout>

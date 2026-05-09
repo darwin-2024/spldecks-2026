@@ -1,0 +1,88 @@
+---
+// src/layouts/PageLayout.astro
+import Layout from './Layout.astro';
+import SEO from '../components/SEO.astro';
+import ServiceSchema from '../components/Serviceschema.astro';
+import Navbar from '../components/Navbar.astro';
+import Footer from '../components/Footer.astro';
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  entry?: CollectionEntry<'services'>; // For Markdown pages
+  seo?: any; // For static pages like indexContent.ts
+  theme?: 'sealguard' | 'coastal';
+}
+
+const { entry, seo, theme = 'ironclad' } = Astro.props;
+
+// Determine if we use the Collection SEO or Manual SEO
+const isCollection = !!entry;
+---
+
+<Layout>
+  <Fragment slot="seo">
+    {
+      isCollection ? (
+        <>
+          <SEO service={entry} />
+          <ServiceSchema service={entry} url={Astro.url.pathname} />
+        </>
+      ) : (
+        <>
+          {/* Manual SEO for Index/About/Contact */}
+          {seo?.title && <title>{seo.title}</title>}
+          {seo?.description && (
+            <meta name="description" content={seo.description} />
+          )}
+          <link
+            rel="canonical"
+            href={
+              seo?.additionalLinkTags?.find(
+                (t: { rel: string }) => t.rel === 'canonical'
+              )?.href ||
+              `${Astro.site}${Astro.url.pathname.endsWith('/') ? Astro.url.pathname : Astro.url.pathname + '/'}`
+            }
+          />
+
+          {/* OpenGraph */}
+          <meta
+            property="og:title"
+            content={seo?.openGraph?.title || seo?.title}
+          />
+          <meta
+            property="og:description"
+            content={seo?.openGraph?.description || seo?.description}
+          />
+          <meta property="og:image" content={seo?.openGraph?.image} />
+          <meta
+            property="og:type"
+            content={seo?.openGraph?.type || 'website'}
+          />
+
+          {/* Twitter */}
+          <meta name="twitter:card" content="summary_large_image" />
+          <meta
+            name="twitter:title"
+            content={seo?.twitter?.title || seo?.title}
+          />
+
+          {/* JSON-LD from the ts file */}
+          {seo?.jsonLd && (
+            <script
+              type="application/ld+json"
+              set:html={JSON.stringify(seo.jsonLd)}
+            />
+          )}
+        </>
+      )
+    }
+  </Fragment>
+
+  <div data-theme={theme} class="min-h-screen flex flex-col">
+    <Navbar />
+    <div class="mx-auto px-4 sm:px-6 lg:px-8 max-w-7xl grow w-full">
+      <slot />
+    </div>
+    <Footer />
+  </div>
+</Layout>

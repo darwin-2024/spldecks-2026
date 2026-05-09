@@ -1,0 +1,63 @@
+---
+// src/components/seo/SEO.astro
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  service: CollectionEntry<'services'>;
+  canonicalUrl?: string;
+  type?: 'website' | 'article';
+}
+
+const { service, canonicalUrl, type = 'website' } = Astro.props;
+const { data } = service;
+
+const siteUrl = "https://splwaterproofing.com";
+
+/**
+ * 2026 Canonical Logic: 
+ * Ensures every URL ends with a trailing slash to match Astro's 
+ * build output (folder/index.html) and prevents redirect chains.
+ */
+const getCanonical = () => {
+  if (canonicalUrl) return canonicalUrl;
+  if (data.seo?.canonicalURL) return data.seo.canonicalURL;
+  
+  const path = Astro.url.pathname;
+  // Ensure path starts with / and ends with /
+  const cleanPath = path.endsWith('/') ? path : `${path}/`;
+  return `${siteUrl}${cleanPath}`;
+};
+
+const title = data.seo?.title || data.title;
+const description = data.seo?.description || data.description;
+const permalink = getCanonical();
+
+// Social Image - ensuring absolute URL for AI scrapers
+const ogImageRelative = data.seo?.ogImage?.src || data.heroImage?.src;
+const ogImage = ogImageRelative ? `${siteUrl}${ogImageRelative}` : `${siteUrl}/default-og.png`;
+---
+
+<title>{title}</title>
+<meta name="description" content={description} />
+<link rel="canonical" href={permalink} />
+
+{data.seo?.noindex ? (
+  <meta name="robots" content="noindex, nofollow" />
+) : (
+  <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" />
+)}
+
+<meta property="og:type" content={type} />
+<meta property="og:url" content={permalink} />
+<meta property="og:title" content={title} />
+<meta property="og:description" content={description} />
+<meta property="og:image" content={ogImage} />
+<meta property="og:site_name" content="SPL Waterproofing Inc." />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:url" content={permalink} />
+<meta name="twitter:title" content={title} />
+<meta name="twitter:description" content={description} />
+<meta name="twitter:image" content={ogImage} />
+
+{data.heroAlt && <meta name="image:alt" content={data.heroAlt} />}

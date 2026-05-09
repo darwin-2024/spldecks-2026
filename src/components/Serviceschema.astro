@@ -1,0 +1,149 @@
+---
+// src/components/seo/ServiceSchema.astro
+import type { CollectionEntry } from 'astro:content';
+
+interface Props {
+  service: CollectionEntry<'services'>;
+  url: string;
+}
+
+const { service: entry, url } = Astro.props;
+const { data } = entry;
+
+const BUSINESS = {
+  name: 'SPL Water Proofing Inc.',
+  url: 'https://spldecks.com',
+  logo: 'https://spldecks.com/logo.png',
+  email: 'contact@spldecks.com',
+  phone: '+1-949-817-1865',
+  license: 'California C-39 Roofing License',
+  sameAs: ['https://www.linkedin.com/company/spl-waterproofing-inc'],
+  address: {
+    city: 'Santa Ana',
+    region: 'CA',
+    postalCode: '92704',
+    country: 'US',
+  },
+};
+
+// 1. Define Regional Authority
+const counties = ['Orange County', 'Los Angeles County'];
+const coreCities = [
+  'Laguna Beach',
+  'Dana Point',
+  'Anaheim',
+  'Los Angeles',
+  'Malibu',
+  'Santa Monica',
+  'West Los Angeles',
+  'Venice',
+  'Palisades',
+  'THousand Oaks',
+  'San Clemente',
+];
+
+// 2. Merge with specific city from Markdown (e.g., Canoga Park)
+const pageSpecificAreas = data.structuredData?.areaServed ?? [];
+const allAreas = [
+  ...new Set([...counties, ...coreCities, ...pageSpecificAreas]),
+];
+
+const areaServedSchema = allAreas.map((area) => ({
+  '@type': counties.includes(area) ? 'AdministrativeArea' : 'City',
+  name: area,
+  containedInPlace: counties.includes(area)
+    ? { '@type': 'State', name: 'California' }
+    : undefined,
+}));
+
+// 3. Define Graph Nodes
+const organization = {
+  '@type': 'Organization',
+  '@id': `${BUSINESS.url}/#organization`,
+  name: BUSINESS.name,
+  url: BUSINESS.url,
+  logo: BUSINESS.logo,
+  sameAs: BUSINESS.sameAs,
+  contactPoint: {
+    '@type': 'ContactPoint',
+    contactType: 'customer support',
+    email: BUSINESS.email,
+    telephone: BUSINESS.phone,
+  },
+};
+
+const localBusiness = {
+  '@type': 'LocalBusiness',
+  '@id': `${BUSINESS.url}/#localbusiness`,
+  name: BUSINESS.name,
+  parentOrganization: { '@id': `${BUSINESS.url}/#organization` },
+  address: {
+    '@type': 'PostalAddress',
+    addressLocality: BUSINESS.address.city,
+    addressRegion: BUSINESS.address.region,
+    addressCountry: BUSINESS.address.country,
+  },
+  areaServed: areaServedSchema,
+  hasCredential: {
+    '@type': 'EducationalOccupationalCredential',
+    name: BUSINESS.license,
+    credentialCategory: 'Contractor License',
+  },
+};
+
+const serviceSchema = {
+  '@type': 'Service',
+  '@id': `${BUSINESS.url}${url}#service`,
+  name: data.seo?.title || data.title,
+  description: data.seo?.description || data.description,
+  serviceType: data.structuredData?.serviceType || 'Waterproofing',
+  provider: { '@id': `${BUSINESS.url}/#organization` },
+  areaServed: areaServedSchema,
+  ...(data.heroImage?.src && { image: `${BUSINESS.url}${data.heroImage.src}` }),
+  ...(data.features?.items?.length && {
+    hasOfferCatalog: {
+      '@type': 'OfferCatalog',
+      name: data.title,
+      itemListElement: data.features.items.map(
+        (feat: string | { text: string }) => ({
+          '@type': 'Offer',
+          itemOffered: {
+            '@type': 'Service',
+            name: typeof feat === 'string' ? feat : feat.text,
+          },
+        })
+      ),
+    },
+  }),
+};
+
+// 4. Final Graph Assembly
+const jsonLd = {
+  '@context': 'https://schema.org',
+  '@graph': [
+    organization,
+    localBusiness,
+    serviceSchema,
+    ...(data.faq?.length
+      ? [
+          {
+            '@type': 'FAQPage',
+            '@id': `${BUSINESS.url}${url}#faq`,
+            mainEntity: data.faq.map(
+              (item: { question: string; answer: string }) => ({
+                '@type': 'Question',
+                name: item.question,
+                acceptedAnswer: {
+                  '@type': 'Answer',
+                  text: item.answer,
+                },
+              })
+            ),
+          },
+        ]
+      : []),
+  ],
+};
+---
+
+<script type="application/ld+json" set:html={JSON.stringify(jsonLd)} />

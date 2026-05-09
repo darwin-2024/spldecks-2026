@@ -1,0 +1,58 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Feature {
+  icon: string;
+  text: string;
+}
+
+interface FeaturesProps {
+  features: {
+    title: string;
+    description?: string;
+    items: Feature[];
+  };
+}
+
+const { features } = Astro.props as FeaturesProps;
+---
+
+<section class="py-20 bg-base-100 border-y border-base-300">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <!-- Header Section -->
+    <div class="text-center mb-16">
+      <h2
+        class="text-3xl md:text-4xl font-extrabold text-base-content uppercase tracking-tight"
+      >
+        {features.title}
+      </h2>
+      <div class="mt-4 h-1.5 w-16 bg-accent mx-auto"></div>
+      <!-- Accent line for industrial feel -->
+      {
+        features.description && (
+          <p class="mt-6 text-lg text-base-content/70 max-w-2xl mx-auto">
+            {features.description}
+          </p>
+        )
+      }
+    </div>
+
+    <!-- Features Grid -->
+    <div
+      class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-0 border-l border-t border-base-300"
+    >
+      {
+        features.items.map((item) => (
+          <div class="flex flex-col p-10 bg-base-100 border-r border-b border-base-300 transition-colors hover:bg-base-200 group">
+            <div class="flex items-center justify-center w-12 h-12 bg-primary/10 text-primary mb-8 group-hover:bg-primary group-hover:text-primary-content transition-all duration-300 rounded-sm">
+              <Icon name={item.icon} class="w-6 h-6" />
+            </div>
+            <p class="text-base-content font-medium leading-relaxed">
+              {item.text}
+            </p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

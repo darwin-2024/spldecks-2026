@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- Created with Inkscape (http://www.inkscape.org/) -->
+
+<svg
+   width="113.7963mm"
+   height="176.88441mm"
+   viewBox="0 0 113.7963 176.88441"
+   version="1.1"
+   id="svg1"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:svg="http://www.w3.org/2000/svg">
+  <defs
+     id="defs1" />
+  <g
+     id="layer1"
+     transform="translate(-49.86525,-63.923397)">
+    <path
+       id="rect3"
+       style="fill:#333333;stroke-width:13.1481;paint-order:markers fill stroke"
+       d="m 115.70729,111.05995 c -4.21866,-0.13621 -8.292,2.22029 -10.17267,6.30798 l -9.216194,19.35554 56.682284,24.27571 c 1.42145,-1.05084 2.60876,-2.46252 3.40266,-4.18808 l 6.09055,-13.23833 c 2.50754,-5.45023 0.13968,-11.85593 -5.31054,-14.36347 l -37.28527,-17.15466 c -1.36256,-0.62685 -2.7846,-0.94936 -4.19082,-0.99469 z" />
+    <path
+       id="rect1"
+       style="fill:#000000;stroke-width:13.347;paint-order:markers fill stroke"
+       d="m 73.67303,79.498811 c -13.188967,0 -23.80778,10.618808 -23.80778,23.807799 v 71.66249 c 0,0.92452 0.06422,1.83216 0.165771,2.72865 v 17.60306 h 9.574751 c 0,0 24.980661,49.34606 26.965836,45.26741 1.985185,-4.07864 26.136912,-45.26741 26.136912,-45.26741 h 9.94437 v -69.04796 h 0.44299 c -0.0102,-0.005 -0.29626,-0.16567 -0.29626,-0.16567 l 40.80751,-13.97214 c 0.0247,-0.35501 0.0544,-0.70932 0.0544,-1.07078 V 94.70761 c 0,-8.426232 -6.78244,-15.208694 -15.20871,-15.208694 h -49.770746 -2.16879 z" />
+    <circle
+       style="fill:#ffffff;stroke-width:13.1481;paint-order:markers fill stroke"
+       id="path3"
+       cx="106.76339"
+       cy="100.93592"
+       r="6.6172614" />
+    <rect
+       style="fill:#ffffff;stroke-width:9.32625;paint-order:markers fill stroke"
+       id="rect4"
+       width="32.435883"
+       height="62.647404"
+       x="69.776215"
+       y="120.9874"
+       ry="9.6049452"
+       rx="9.6049452" />
+    <rect
+       style="fill:#000000;stroke-width:17.1496;paint-order:markers fill stroke"
+       id="rect5"
+       width="5.7901039"
+       height="16.042597"
+       x="98.23098"
+       y="66.905464" />
+    <rect
+       style="fill:#000000;stroke-width:13.1481;paint-order:markers fill stroke"
+       id="rect6"
+       width="38.380116"
+       height="8.7678719"
+       x="81.935974"
+       y="63.923397"
+       ry="3.9703567"
+       rx="3.9703567" />
+  </g>
+</svg>

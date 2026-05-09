@@ -1,0 +1,175 @@
+---
+import { companyInfo } from '../data/companyInfo';
+import { Icon } from 'astro-icon/components';
+import Logo from '../assets/svgs/logo.svg';
+
+const navLinks = [
+  { name: 'Home', href: '/' },
+  { name: 'About', href: '/about/' },
+  { name: 'Services', href: '/services/' },
+  { name: 'Contact', href: '/contact/' },
+];
+---
+
+<header
+  id="navbar-header"
+  class="sticky top-0 z-50 w-full bg-base-100/95 backdrop-blur-md border-b border-base-300 transition-transform duration-300 ease-in-out"
+>
+  <div class="drawer">
+    <input id="mobile-drawer" type="checkbox" class="drawer-toggle" />
+
+    <div class="drawer-content flex flex-col">
+      <!-- Navbar Container -->
+      <nav class="max-w-7xl mx-auto navbar px-4 sm:px-6 lg:px-8 w-full">
+        <div class="navbar-start">
+          <!-- Mobile Menu Toggle -->
+          <label
+            for="mobile-drawer"
+            class="btn btn-ghost lg:hidden drawer-button"
+            aria-label="Open Menu"
+          >
+            <Icon name="mdi:menu" class="w-7 h-7" />
+          </label>
+
+          <!-- Desktop/Mobile Logo -->
+          <a
+            href="/"
+            class="flex items-center gap-2 group ml-2 lg:ml-0"
+            aria-label="SPL Decks Home"
+          >
+            <Logo class="w-9 h-9" />
+            <span
+              class="text-xl font-bold tracking-tight text-primary uppercase"
+            >
+              SPL <span class="text-secondary">Decks</span>
+            </span>
+          </a>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <div class="navbar-center hidden lg:flex">
+          <ul class="menu menu-horizontal px-1 gap-2">
+            {
+              navLinks.map((link) => (
+                <li>
+                  <a
+                    href={link.href}
+                    class="hover:text-primary font-medium transition-colors"
+                  >
+                    {link.name}
+                  </a>
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+
+        <!-- Contact Action -->
+        <div class="navbar-end">
+          <a
+            href={`tel:${companyInfo.phoneLink}`}
+            class="btn btn-primary hidden sm:flex gap-2 rounded-sm shadow-md shadow-primary/20"
+          >
+            <Icon name="mdi:phone" class="w-5 h-5" />
+            {companyInfo.phone}
+          </a>
+          <a
+            href={`tel:${companyInfo.phoneLink}`}
+            class="btn btn-primary btn-square sm:hidden rounded-sm"
+          >
+            <Icon name="mdi:phone" class="w-6 h-6" />
+          </a>
+        </div>
+      </nav>
+    </div>
+
+    <!-- Mobile Drawer Sidebar -->
+    <div class="drawer-side z-100">
+      <label
+        for="mobile-drawer"
+        aria-label="close sidebar"
+        class="drawer-overlay"></label>
+      <div
+        class="menu p-0 w-80 min-h-full bg-base-100 text-base-content flex flex-col"
+      >
+        <!-- Drawer Header -->
+        <div
+          class="p-6 border-b border-base-300 flex items-center justify-between bg-base-200/50"
+        >
+          <div class="flex items-center gap-2">
+            <Logo class="w-8 h-8" />
+            <span class="font-bold text-lg text-primary uppercase"
+              >SPL Decks</span
+            >
+          </div>
+          <label for="mobile-drawer" class="btn btn-ghost btn-sm btn-circle">
+            <Icon name="mdi:close" class="w-6 h-6" />
+          </label>
+        </div>
+
+        <!-- Navigation Links -->
+        <ul class="grow p-4 overflow-y-auto">
+          {
+            navLinks.map((link) => (
+              <li class="border-b border-base-200 last:border-0">
+                <a
+                  href={link.href}
+                  class="py-6 text-xl font-semibold active:bg-primary/10"
+                >
+                  {link.name}
+                </a>
+              </li>
+            ))
+          }
+        </ul>
+
+        <!-- Drawer Footer -->
+        <div class="p-6 bg-base-200 border-t border-base-300">
+          <p
+            class="text-xs uppercase tracking-widest text-base-content/50 mb-4 font-bold"
+          >
+            Contact an Expert
+          </p>
+          <a
+            href={`tel:${companyInfo.phoneLink}`}
+            class="flex items-center gap-3 text-xl font-bold text-primary mb-2"
+          >
+            <Icon name="mdi:phone" class="w-6 h-6" />
+            {companyInfo.phone}
+          </a>
+          <p class="text-sm text-base-content/60">
+            Lic. #C39 Roofing & Waterproofing
+          </p>
+        </div>
+      </div>
+    </div>
+  </div>
+</header>
+
+<script>
+  let lastScrollY = window.scrollY;
+  const navbar = document.getElementById('navbar-header');
+  const drawerToggle = document.getElementById(
+    'mobile-drawer'
+  ) as HTMLInputElement;
+
+  window.addEventListener('scroll', () => {
+    // Don't hide navbar if mobile drawer is open
+    if (drawerToggle?.checked) return;
+
+    if (window.scrollY > lastScrollY && window.scrollY > 100) {
+      navbar?.classList.add('-translate-y-full');
+    } else {
+      navbar?.classList.remove('-translate-y-full');
+    }
+    lastScrollY = window.scrollY;
+  });
+
+  // Close drawer on link click
+  const drawerLinks = document.querySelectorAll('.drawer-side a');
+  drawerLinks.forEach((link) => {
+    link.addEventListener('click', () => {
+      if (drawerToggle) drawerToggle.checked = false;
+    });
+  });
+</script>

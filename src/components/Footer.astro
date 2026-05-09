@@ -1,0 +1,113 @@
+---
+// src/components/Footer.astro
+import { companyInfo } from '../data/companyInfo';
+import { indexPage } from '../data/indexPage';
+import { Icon } from 'astro-icon/components';
+import Logo from '../assets/svgs/logo.svg';
+
+const currentYear = new Date().getFullYear();
+
+const quickLinks = [
+  { name: 'About Our Company', href: '/about/' },
+  { name: 'Request an Inspection', href: '/contact/' },
+  { name: 'Apartment Complex Waterproofing', href: '/services/apartment-complex-waterproofing-orange-county/' },
+  { name: 'Commercial Deck Repair', href: '/services/commercial-deck-repair-los-angeles/' },
+];
+---
+
+<footer class="bg-base-300 pt-20 pb-10 mt-auto">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-12 mb-16">
+      {/* Brand Section */}
+      <div class="space-y-6">
+        <a href="/" class="flex items-center gap-2" aria-label="SPL Decks Home">
+          <Logo class="w-20 h-20" aria-label="SPL Waterproofing Logo" />
+       
+          <span class="text-2xl font-bold font-heading tracking-tight text-primary uppercase">SPL <span class="text-secondary">Decks</span></span>
+        </a>
+        <p class="text-base-content/70 font-body leading-relaxed">
+          C-39 Licensed waterproofing contractors specializing in high-performance systems for decks, balconies, foundations, and commercial properties throughout Southern California.
+        </p>
+        <div class="flex gap-4">
+          {companyInfo.socialMedia.facebook && (
+            <a href={companyInfo.socialMedia.facebook} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-circle btn-sm hover:text-primary" aria-label="Facebook">
+              <Icon name="mdi:facebook" class="w-6 h-6" />
+            </a>
+          )}
+          {companyInfo.socialMedia.instagram && (
+            <a href={companyInfo.socialMedia.instagram} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-circle btn-sm hover:text-primary" aria-label="Instagram">
+              <Icon name="mdi:instagram" class="w-6 h-6" />
+            </a>
+          )}
+             {companyInfo.socialMedia.youtube && (
+            <a href={companyInfo.socialMedia.youtube} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-circle btn-sm hover:text-primary" aria-label="Youtube">
+              <Icon name="mdi:youtube" class="w-6 h-6" />
+            </a>
+          )}
+          {companyInfo.socialMedia.yelp && (
+            <a href={companyInfo.socialMedia.yelp} target="_blank" rel="noopener noreferrer" class="btn btn-ghost btn-circle btn-sm hover:text-primary" aria-label="Yelp">
+              <Icon name="mdi:yelp" class="w-6 h-6" />
+            </a>
+          )}
+        </div>
+      </div>
+
+      {/* Services Links */}
+      <div>
+        <h3 class="text-lg font-bold font-heading mb-6 text-primary uppercase tracking-wider">Our Services</h3>
+        <ul class="space-y-4">
+          {indexPage.services.items.map(service => (
+            <li>
+              <a href={service.pageLink} class="text-base-content/70 hover:text-primary transition-colors flex items-center gap-2">
+                <Icon name="mdi:chevron-right" class="w-4 h-4" />
+                {service.title}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+
+      {/* Quick Links */}
+      <div>
+        <h3 class="text-lg font-bold font-heading mb-6 text-primary uppercase tracking-wider">Quick Links</h3>
+        <ul class="space-y-4">
+          {quickLinks.map(link => (
+            <li>
+              <a href={link.href} class="text-base-content/70 hover:text-primary transition-colors">
+                {link.name}
+              </a>
+            </li>
+          ))}
+          <li><p class="text-sm text-base-content/70 mt-4 font-bold uppercase tracking-widest">Lic. #1088354</p></li>
+        </ul>
+      </div>
+
+      {/* Contact Info */}
+      <div>
+        <h3 class="text-lg font-bold font-heading mb-6 text-primary uppercase tracking-wider">Contact Us</h3>
+        <ul class="space-y-6">
+          <li class="flex items-start gap-3">
+            <Icon name="mdi:map-marker" class="w-6 h-6 text-primary shrink-0" aria-hidden="true" />
+            <span class="text-base-content/70">{companyInfo.address}</span>
+          </li>
+          <li>
+            <a href={`tel:${companyInfo.phoneLink}`} class="flex items-center gap-3 group" aria-label={`Call us at ${companyInfo.phone}`}>
+              <Icon name="mdi:phone" class="w-6 h-6 text-primary shrink-0 group-hover:scale-110 transition-transform" aria-hidden="true" />
+              <span class="text-xl font-bold text-base-content group-hover:text-primary transition-colors">{companyInfo.phone}</span>
+            </a>
+          </li>
+          <li>
+            <a href={`mailto:${companyInfo.email}`} class="flex items-center gap-3 group" aria-label={`Email us at ${companyInfo.email}`}>
+              <Icon name="mdi:email" class="w-6 h-6 text-primary shrink-0 group-hover:scale-110 transition-transform" aria-hidden="true" />
+              <span class="text-base-content/70 group-hover:text-primary transition-colors">{companyInfo.email}</span>
+            </a>
+          </li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="pt-8 border-t border-base-content/10 flex flex-col md:flex-row justify-between items-center gap-4 text-sm text-base-content/70">
+      <p>© {currentYear} {companyInfo.businessName} All rights reserved.</p>
+    </div>
+  </div>
+</footer>

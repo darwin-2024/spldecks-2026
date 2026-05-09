@@ -1,0 +1,81 @@
+---
+// src/components/HomeHero.astro
+import { Image } from 'astro:assets';
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  data: {
+    title: string;
+    description: string;
+    cta: {
+      label: string;
+      href: string;
+      iconName: string;
+    };
+    image: {
+      src: any;
+      alt: string;
+      priority?: boolean;
+    };
+  };
+}
+
+const { data } = Astro.props;
+---
+
+<section class="bg-base-100 py-12 lg:py-20">
+  <div class="container mx-auto px-4">
+    <!-- items-stretch ensures both columns have equal height -->
+    <div class="flex flex-col lg:flex-row items-stretch gap-8 lg:gap-16">
+      <!-- Text Column -->
+      <div class="flex-1 flex flex-col justify-center py-4">
+        <h1
+          class="text-4xl lg:text-5xl font-extrabold tracking-tight text-base-content leading-[1.1]"
+        >
+          {data.title}
+        </h1>
+        <p
+          class="mt-6 mb-10 text-lg font-body text-base-content/70 leading-relaxed max-w-xl"
+        >
+          {data.description}
+        </p>
+        <div class="flex flex-wrap gap-4">
+          <a
+            href={data.cta.href}
+            class="btn btn-primary rounded-sm px-8"
+            aria-label={data.cta.label}
+          >
+            <Icon name={data.cta.iconName} class="w-5 h-5" aria-hidden="true" />
+            {data.cta.label}
+          </a>
+          <a
+            href="/services/"
+            class="btn btn-outline border-2 rounded-sm px-8"
+            aria-label="View all waterproofing services"
+          >
+            View Our Services
+          </a>
+        </div>
+      </div>
+
+      <!-- Image Column -->
+      <div class="flex-1 min-h-100 lg:min-h-full">
+        <div class="relative h-full w-full">
+          <!-- Subtle industrial accent block instead of soft blobs -->
+          <div
+            class="absolute -top-3 -right-3 w-24 h-24 border-t-4 border-r-4 border-accent/20 hidden lg:block"
+          >
+          </div>
+
+          <Image
+            src={data.image.src}
+            alt={data.image.alt}
+            class="rounded-sm shadow-xl w-full h-full object-cover"
+            loading={data.image.priority ? 'eager' : 'lazy'}
+            fetchpriority={data.image.priority ? 'high' : 'auto'}
+          />
+        </div>
+      </div>
+    </div>
+  </div>
+</section>

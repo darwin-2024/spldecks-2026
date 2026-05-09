@@ -1,0 +1,132 @@
+---
+// src/pages/services.astro
+import { getCollection } from 'astro:content';
+import PageLayout from '../layouts/PageLayout.astro';
+import Hero from '../components/Hero.astro';
+import { Icon } from 'astro-icon/components';
+import { Image } from 'astro:assets';
+import heroImage from '../assets/images/deck_waterproofing_background.jpg';
+
+export const prerender = true;
+
+const allServices = await getCollection('services');
+
+const sortedServices = allServices.sort((a, b) => a.data.title.localeCompare(b.data.title));
+
+const seo = {
+  title: 'Professional Deck & Surface Waterproofing | SPL Decks',
+  description: 'Specialized deck waterproofing, resurfacing, and protection services for Southern California. View our full range of residential and commercial deck systems.',
+  jsonLd: {
+    '@context': 'https://schema.org',
+    '@type': 'Service',
+    'name': 'SPL Decks Waterproofing Services',
+    'description': 'Expert installation of pedestrian deck coatings, balcony waterproofing, and decorative deck finishes.'
+  }
+};
+
+const heroData = {
+  title: 'Expert Deck Waterproofing Systems',
+  description: 'Protecting your investment with premium, multi-layer coating systems designed for Los Angeles and Orange County decks, balconies, and walkways.',
+  heroImage: heroImage,
+  heroAlt: 'A beautifully finished waterproofed deck overlooking a coastal property'
+};
+---
+
+<PageLayout seo={seo}>
+  <Hero data={heroData} />
+
+  <!-- Main Services Grid Section -->
+  <section class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+    
+    <!-- Section Header: Refactored for Full Width -->
+    <div class="mb-16 border-l-8 border-primary pl-6 md:pl-10">
+      <h2 class="text-3xl md:text-5xl lg:text-6xl font-black tracking-tight text-base-content uppercase leading-[1.1]">
+        Premium Deck & Balcony Waterproofing <span class="text-base-content/40">|</span> 
+        Structural Repair & Pedestrian Coatings <span class="text-base-content/40">|</span> 
+        <span class="text-primary">SPL Decks</span>
+      </h2>
+      
+      <p class="mt-8 text-lg md:text-xl text-base-content/70 leading-relaxed max-w-5xl">
+        Trusted across Ventura, LA, and OC — from Thousand Oaks to San Clemente. SPL Decks offers premium pedestrian coatings, structural deck repair, and fully code-compliant balcony waterproofing for multifamily, commercial, and residential properties.
+      </p>
+    </div>
+
+    <!-- Services Grid: Full Container Width -->
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-10">
+      {sortedServices.map(service => (
+        <article class="group bg-base-100 border border-base-300 rounded-sm hover:border-primary transition-all duration-300 flex flex-col h-full shadow-sm hover:shadow-xl">
+          <!-- Image Container -->
+          <div class="relative aspect-16/10 overflow-hidden bg-base-200">
+            <Image 
+              src={service.data.heroImage} 
+              alt="" 
+              class="w-full h-full object-cover grayscale-20 group-hover:grayscale-0 transition-all duration-500 group-hover:scale-105"
+            />
+            <!-- Decorative Category Badge -->
+            <div class="absolute bottom-0 left-0 bg-primary text-primary-content px-4 py-1 text-xs font-bold uppercase tracking-widest" aria-hidden="true">
+              {service.data.category}
+            </div>
+          </div>
+
+          <!-- Content -->
+          <div class="p-8 flex flex-col grow">
+            <h3 class="text-2xl font-bold text-base-content mb-3 group-hover:text-primary transition-colors uppercase tracking-tight">
+              {service.data.title}
+            </h3>
+            <p class="text-base-content/60 mb-8 line-clamp-3 text-sm leading-relaxed">
+              {service.data.description}
+            </p>
+            
+            <div class="mt-auto pt-6 border-t border-base-200">
+              <a 
+                href={`/services/${service.id}/`} 
+                class="text-primary font-bold uppercase tracking-tighter flex items-center gap-2 hover:gap-4 transition-all focus:outline-none focus:underline"
+              >
+                <span>Full Specifications</span>
+                <span class="sr-only">for {service.data.title}</span>
+                <Icon name="mdi:chevron-right" class="w-5 h-5" aria-hidden="true" />
+              </a>
+            </div>
+          </div>
+        </article>
+      ))}
+    </div>
+  </section>
+
+  <!-- SPL Brand Specific CTA -->
+  <section class="max-w-7xl mx-auto px-4 mb-20">
+    <div class="bg-neutral text-neutral-content p-8 md:p-16 rounded-sm relative overflow-hidden">
+      <Icon name="mdi:water-off" class="absolute -right-10 -bottom-10 w-64 h-64 opacity-10 pointer-events-none text-white" />
+      
+      <div class="relative z-10 max-w-4xl">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6 uppercase tracking-tight text-white">
+          Need a custom deck solution?
+        </h2>
+        <p class="text-xl text-white/90 mb-10 leading-relaxed">
+          We don't just seal surfaces—we solve drainage issues and restore structural integrity. Schedule an on-site consultation today.
+        </p>
+        
+        <div class="flex flex-wrap gap-4">
+          <a href="/contact/" class="btn btn-primary btn-lg rounded-sm px-8 border-none shadow-xl hover:scale-105 transition-transform">
+            Get a Free Estimate
+          </a>
+          
+          <a 
+            href="tel:+17147915327" 
+            class="btn btn-secondary btn-lg rounded-sm px-8 border-none bg-white text-neutral hover:bg-white/90 hover:text-neutral transition-all flex items-center shadow-lg"
+          >
+            <Icon name="mdi:phone" class="w-5 h-5 mr-2" />
+            (949) 817-1865
+          </a>
+        </div>
+      </div>
+    </div>
+  </section>
+</PageLayout>
+
+<style>
+  h2, h3 {
+    font-family: var(--font-heading, inherit);
+    letter-spacing: -0.025em;
+  }
+</style>

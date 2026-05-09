@@ -1,0 +1,19 @@
+---
+import PageLayout from '../layouts/PageLayout.astro';
+import { aboutPage } from '../data/aboutPage';
+import AboutHero from '../components/AboutHero.astro';
+import ValuesGrid from '../components/ValuesGrid.astro';
+import ComplianceTable from '../components/ComplianceTable.astro';
+import BrandSlider from '../components/BrandSlider.astro';
+
+const { seo, hero, values, partnerships, compliance } = aboutPage;
+---
+
+<PageLayout seo={seo}>
+  <AboutHero data={hero} />
+  <BrandSlider title={partnerships.title} brands={partnerships.brands} />
+  <ValuesGrid title={values.title} items={values.items} />
+  <ComplianceTable {...compliance} />
+  
+  <!-- Reuse your CTA component from the home page here -->
+</PageLayout>

@@ -1,0 +1,39 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface Props {
+  title: string;
+  items: Array<{
+    icon: string;
+    title: string;
+    text: string;
+  }>;
+}
+
+const { title, items } = Astro.props;
+---
+
+<section class="py-20 bg-base-200">
+  <div class="container mx-auto px-4">
+    <h2
+      class="text-3xl font-bold text-center text-base-content mb-16 uppercase tracking-tight"
+    >
+      {title}
+    </h2>
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {
+        items.map((item) => (
+          <div class="bg-base-100 p-10 border-t-4 border-primary shadow-sm hover:shadow-md transition-shadow">
+            <div class="text-primary mb-6">
+              <Icon name={item.icon} class="w-10 h-10" />
+            </div>
+            <h3 class="text-xl font-bold mb-4 text-base-content">
+              {item.title}
+            </h3>
+            <p class="text-base-content/70 leading-relaxed">{item.text}</p>
+          </div>
+        ))
+      }
+    </div>
+  </div>
+</section>

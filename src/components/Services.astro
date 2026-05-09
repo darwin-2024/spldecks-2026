@@ -1,0 +1,66 @@
+---
+import { Icon } from 'astro-icon/components';
+
+interface ServiceItem {
+  iconName: string;
+  title: string;
+  description: string;
+  pageLink: string;
+}
+
+interface Props {
+  services: {
+    title: string;
+    description: string;
+    items: ServiceItem[];
+  };
+}
+
+const { services } = Astro.props;
+const { title, description, items: serviceList } = services;
+---
+
+<section class="py-20 bg-base-200">
+  <!-- Uses your subtle section contrast -->
+  <div class="max-w-7xl mx-auto px-6 lg:px-8">
+    <div class="text-center mb-16">
+      <h2
+        class="text-3xl font-extrabold tracking-tight text-base-content sm:text-4xl uppercase"
+      >
+        {title}
+      </h2>
+      <div class="mt-2 h-1 w-20 bg-primary mx-auto"></div>
+      <!-- Industrial accent line -->
+      <p class="mt-6 text-lg text-base-content/70 max-w-2xl mx-auto">
+        {description}
+      </p>
+    </div>
+
+    <div class="grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
+      {
+        serviceList.map((service) => (
+          <a
+            href={service.pageLink}
+            class="group flex flex-col bg-base-100 border border-base-300 rounded-sm p-8 transition-all hover:border-primary hover:shadow-lg"
+          >
+            <div class="flex items-center justify-center w-12 h-12 bg-base-200 text-primary mb-6 group-hover:bg-primary group-hover:text-primary-content transition-colors">
+              <Icon name={service.iconName} class="w-6 h-6" />
+            </div>
+            <h3 class="text-xl font-bold text-base-content mb-3">
+              {service.title}
+            </h3>
+            <p class="text-sm text-base-content/70 leading-relaxed mb-6 grow">
+              {service.description}
+            </p>
+            <span class="text-xs font-bold uppercase tracking-widest text-primary flex items-center gap-2">
+              View Details{' '}
+              <span class="group-hover:translate-x-1 transition-transform">
+                →
+              </span>
+            </span>
+          </a>
+        ))
+      }
+    </div>
+  </div>
+</section>
