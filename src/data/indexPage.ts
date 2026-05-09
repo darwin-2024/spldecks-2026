@@ -114,7 +114,8 @@ export const indexPage = {
       {
         iconName: 'mdi:office-building',
         title: 'Commercial Waterproofing',
-        description: 'Building envelope protection and seamless flat roof membranes.',
+        description:
+          'Building envelope protection and seamless flat roof membranes.',
         pageLink: '/services/commercial-building-waterproofing-orange-county/',
       },
       {
@@ -137,7 +138,7 @@ export const indexPage = {
   features: {
     title: 'The SPL Standard',
     items: [
-      { icon: 'mdi:shield-lock', text: 'C-39 Specialty License #1034442' }, // Specificity builds trust
+      { icon: 'mdi:shield-lock', text: 'C-39 Specialty License #1088354' }, // Specificity builds trust
       { icon: 'mdi:timer-sand', text: 'Rapid-Response Leak Inspections' },
       { icon: 'mdi:certificate', text: 'Manufacturer-Certified Installers' },
       { icon: 'mdi:check-decagram', text: 'Full Structural Compliance' },
