@@ -10,7 +10,7 @@ import type { CollectionEntry } from 'astro:content';
 interface Props {
   entry?: CollectionEntry<'services'>; // For Markdown pages
   seo?: any; // For static pages like indexContent.ts
-  theme?: 'sealguard' | 'coastal';
+  theme?: 'sealguard' | 'coastal' | 'ironclad';
 }
 
 const { entry, seo, theme = 'ironclad' } = Astro.props;

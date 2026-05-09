@@ -47,7 +47,7 @@
 
 @plugin "daisyui/theme" {
   name: 'coastal';
-  default: true;
+  default: false;
   prefersdark: false;
   color-scheme: light;
 
@@ -93,7 +93,7 @@
 
 @plugin "daisyui/theme" {
   name: 'sealguard';
-  default: true;
+  default: false;
   prefersdark: false;
   color-scheme: light;
 
@@ -150,6 +150,7 @@
   --color-base-200: oklch(
     97% 0.005 100
   ); /* Very faint warmth to feel like light wood/stone */
+  --color-base-300: oklch(94% 0.01 100); /* Steel/Iron depth */
 
   /* A11y Optimized Typography (The "Near-Black") */
   /* This passes WCAG AAA contrast (Ratio ~16:1) */
